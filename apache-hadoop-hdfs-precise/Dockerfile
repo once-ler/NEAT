@@ -1,4 +1,4 @@
-# Base Ubuntu Precise 12.04 LTS image
+﻿# Base Ubuntu Precise 12.04 LTS image
 #
 FROM ubuntu:precise
 MAINTAINER amplab amp-docker@eecs.berkeley.edu
@@ -8,6 +8,11 @@ VOLUME ["/data"]
 
 # Set correct source list
 RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
+
+# Openjdk dependency
+# Ref: http://superuser.com/questions/478284/dependencies-problems-installing-openjdk-on-ubuntu
+ADD http://160.26.2.181/ports/pool/main/t/tzdata/tzdata-java_2014a-0ubuntu0.12.04_all.deb /root/
+RUN dpkg -i /root/tzdata-java_2014a-0ubuntu0.12.04_all.deb
 
 # install a few other useful packages plus Open Jdk 7
 RUN apt-get update && apt-get upgrade -y && apt-get install -y less openjdk-7-jre-headless net-tools vim-tiny sudo openssh-server iputils-ping
