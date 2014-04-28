@@ -2,16 +2,19 @@
 #
 FROM apache-hadoop-hdfs-precise:1.2.1
 
-#MAINTAINER amplab amp-docker@eecs.berkeley.edu
+MAINTAINER htaox htaox@hotmail.com
 
 # Download and Install HBase
 ENV HBASE_VERSION 0.94.18
 
-RUN mkdir -p /opt/downloads && cd /opt/downloads && curl -SsfLO "http://www.apache.org/dist/hbase/hbase-$HBASE_VERSION/hbase-$HBASE_VERSION.tar.gz"
+#RUN mkdir -p /opt/downloads && cd /opt/downloads && curl -SsfLO "http://www.apache.org/dist/hbase/hbase-$HBASE_VERSION/hbase-$HBASE_VERSION.tar.gz"
+RUN mkdir -p /opt/downloads
+ADD http://www.apache.org/dist/hbase/hbase-$HBASE_VERSION/hbase-$HBASE_VERSION.tar.gz /opt/downloads/hbase-$HBASE_VERSION.tar.gz
+
 RUN cd /opt && tar xvfz /opt/downloads/hbase-$HBASE_VERSION.tar.gz
 # RUN mv /opt/hbase-$HBASE_VERSION /opt/hbase
 # Add symlink
-RUN rm /opt/hbase && ln -s /opt/hbase-$HBASE_VERSION /opt/hbase
+RUN ln -s /opt/hbase-$HBASE_VERSION /opt/hbase
 
 # Data will go here (see hbase-site.xml)
 # RUN mkdir -p /data/hbase /opt/hbase/logs
