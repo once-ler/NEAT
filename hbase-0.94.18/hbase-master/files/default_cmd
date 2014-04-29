@@ -22,4 +22,4 @@ sleep 5
 echo "starting Hbase Master"
 cp /root/hbase_master_files/run_hbase_master.sh /
 chmod a+rx /run_hbase_master.sh
-sudo -u hdfs HBASE_VERSION=$HBASE_VERSION /run_hbase_master.sh
+sudo -u hdfs HBASE_HOME=$HBASE_HOME HBASE_CONF_DIR=$HBASE_CONF_DIR HBASE_VERSION=$HBASE_VERSION /run_hbase_master.sh
