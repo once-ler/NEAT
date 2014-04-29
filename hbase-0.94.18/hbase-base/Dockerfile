@@ -36,6 +36,9 @@ ADD files/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
 RUN rm $HBASE_HOME/conf/hbase-env.sh
 ADD files/hbase-env.sh $HBASE_HOME/conf/hbase-env.sh
 
+RUN rm $HBASE_HOME/conf/zoo.cfg
+ADD files/zoo.cfg $HBASE_HOME/conf/zoo.cfg
+
 # Ports reference
 # http://blog.cloudera.com/blog/2013/07/guide-to-using-apache-hbase-ports/
 
