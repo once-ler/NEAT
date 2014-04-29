@@ -32,7 +32,7 @@ function configure_hbase() {
 	
 	sed -i "s/@IP@/$1/g" $HBASE_HOME/conf/hbase-site.xml
 	sed -i "s/@IP@/$1/g" $HBASE_HOME/conf/zoo.cfg
-	echo "$IP $(hostname)" >> /etc/hosts
+	#echo "$1 $(hostname)" >> /etc/hosts
 }
 
 function prepare_hbase() {
