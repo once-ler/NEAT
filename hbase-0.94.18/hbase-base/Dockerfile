@@ -45,6 +45,7 @@ ADD files/zoo.cfg $HBASE_HOME/conf/zoo.cfg
 EXPOSE 2181
 
 # Expose HBase Master Ports
+# HBase Master web UI at :60010/master-status;  ZK at :60010/zk.jsp
 EXPOSE 60000 60010 
 
 # Expose HBase Region Server Ports
