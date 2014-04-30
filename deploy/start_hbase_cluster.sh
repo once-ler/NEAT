@@ -87,6 +87,7 @@ function wait_for_master {
     #else
     #    query_string="MasterWebUI: Started Master web UI"
     #fi
+    # can use "INFO HBaseServer: Starting"
     echo -n "waiting for master "
     #sudo docker logs $MASTER | grep "$query_string" > /dev/null
     #until [ "$?" -eq 0 ]; do

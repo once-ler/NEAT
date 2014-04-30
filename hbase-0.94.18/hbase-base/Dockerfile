@@ -41,6 +41,9 @@ ADD files/zoo.cfg $HBASE_HOME/conf/zoo.cfg
 # Ports reference
 # http://blog.cloudera.com/blog/2013/07/guide-to-using-apache-hbase-ports/
 
+# Expose zookeeper
+EXPOSE 2181
+
 # Expose HBase Master Ports
 EXPOSE 60000 60010 
 
