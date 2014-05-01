@@ -87,15 +87,15 @@ function wait_for_master {
     #else
     #    query_string="MasterWebUI: Started Master web UI"
     #fi
-    query_string="INFO org.apache.hadoop.http.HttpServer"
+    #query_string="INFO org.apache.hadoop.http.HttpServer"
     echo -n "waiting for master "
-    sudo docker logs $MASTER | grep "$query_string" > /dev/null
-    until [ "$?" -eq 0 ]; do
-	echo -n "."
-	sleep 1
-	sudo docker logs $MASTER | grep "$query_string" > /dev/null;
-    done
-    #sleep 15
+    #sudo docker logs $MASTER | grep "$query_string" > /dev/null
+    #until [ "$?" -eq 0 ]; do
+	#echo -n "."
+	#sleep 1
+	#sudo docker logs $MASTER | grep "$query_string" > /dev/null;
+    #done
+    sleep 5
     echo ""
     echo -n "waiting for nameserver to find master "
     check_hostname result master "$MASTER_IP"

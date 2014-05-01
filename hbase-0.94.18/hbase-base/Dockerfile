@@ -1,8 +1,10 @@
 # HBASE 0.94.18
 #
 FROM apache-hadoop-hdfs-precise:1.2.1
-
 MAINTAINER htaox htaox@hotmail.com
+
+# Intall cURL
+RUN apt-get install -y curl 
 
 # Download and Install HBase
 ENV HBASE_VERSION 0.94.18
@@ -24,11 +26,6 @@ ENV HBASE_HOME /opt/hbase
 ENV HBASE_PREFIX /opt/hbase
 ENV PATH $PATH:$HBASE_HOME/bin
 ENV HBASE_CONF_DIR /opt/hbase/conf
-#ENV HBASE_SERVER /opt/hbase/bin/hbase
-
-#ADD ./hbase-site.xml /opt/hbase/conf/hbase-site.xml
-#ADD ./zoo.cfg /opt/hbase/conf/zoo.cfg
-#ADD ./hbase-server /opt/hbase-server
 
 RUN rm $HBASE_HOME/conf/hbase-site.xml
 ADD files/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
@@ -36,7 +33,15 @@ ADD files/hbase-site.xml $HBASE_HOME/conf/hbase-site.xml
 RUN rm $HBASE_HOME/conf/hbase-env.sh
 ADD files/hbase-env.sh $HBASE_HOME/conf/hbase-env.sh
 
-ADD files/zoo.cfg $HBASE_HOME/conf/zoo.cfg
+# Download and install Zookeeper 3.4.6
+RUN curl -s http://xenia.sote.hu/ftp/mirrors/www.apache.org/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz | tar -xz -C /usr/local/
+RUN cd /usr/local && ln -s zookeeper-3.4.6 zookeeper
+ENV ZOO_HOME /usr/local/zookeeper
+ENV PATH $PATH:$ZOO_HOME/bin
+#RUN mv $ZOO_HOME/conf/zoo_sample.cfg $ZOO_HOME/conf/zoo.cfg
+RUN mkdir /tmp/zookeeper
+
+ADD files/zoo.cfg $ZOO_HOME/conf/zoo.cfg
 
 # Ports reference
 # http://blog.cloudera.com/blog/2013/07/guide-to-using-apache-hbase-ports/

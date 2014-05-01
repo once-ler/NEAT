@@ -1,9 +1,7 @@
 #!/bin/bash
 
-rm "${HBASE_HOME}/logs"/* 
-
 echo -n "starting zookeeper"
-"${HBASE_HOME}/bin"/hbase-daemons.sh --config "${HBASE_CONF_DIR}" start zookeeper
+$ZOO_HOME/bin/zkServer.sh start
 
 sleep 3
 
