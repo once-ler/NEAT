@@ -20,6 +20,9 @@ function create_hbase_directories() {
     chown hdfs.hdfs /usr/local/zookeeper
     mkdir /tmp/zookeeper
     chown hdfs.hdfs /tmp/zookeeper
+    # Zookeeper logs
+    sudo mkdir /var/log/zookeeper
+    sudo chown hdfs.hdfs /var/log/zookeeper
 }
 
 function deploy_hbase_files() {

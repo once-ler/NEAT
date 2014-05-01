@@ -42,6 +42,7 @@ ENV PATH $PATH:$ZOO_HOME/bin
 #RUN mv $ZOO_HOME/conf/zoo_sample.cfg $ZOO_HOME/conf/zoo.cfg
 
 ADD files/zoo.cfg $ZOO_HOME/conf/zoo.cfg
+ADD files/zkEnv.sh $ZOO_HOME/bin/zkEnv.sh
 
 # Ports reference
 # http://blog.cloudera.com/blog/2013/07/guide-to-using-apache-hbase-ports/
