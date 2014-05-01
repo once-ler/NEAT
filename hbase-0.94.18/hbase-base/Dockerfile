@@ -9,7 +9,7 @@ RUN apt-get install -y curl
 # Download and Install HBase
 ENV HBASE_VERSION 0.94.18
 
-#RUN mkdir -p /opt/downloads && cd /opt/downloads && curl -SsfLO "http://www.apache.org/dist/hbase/hbase-$HBASE_VERSION/hbase-$HBASE_VERSION.tar.gz"
+#RUN mkdir -p /opt/downloads && cd /opt/downloads && curl -SsfLO "http://www.apache.org/dcd ist/hbase/hbase-$HBASE_VERSION/hbase-$HBASE_VERSION.tar.gz"
 RUN mkdir -p /opt/downloads
 ADD http://www.apache.org/dist/hbase/hbase-$HBASE_VERSION/hbase-$HBASE_VERSION.tar.gz /opt/downloads/hbase-$HBASE_VERSION.tar.gz
 
@@ -35,11 +35,11 @@ ADD files/hbase-env.sh $HBASE_HOME/conf/hbase-env.sh
 
 # Download and install Zookeeper 3.4.6
 RUN curl -s http://xenia.sote.hu/ftp/mirrors/www.apache.org/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz | tar -xz -C /usr/local/
-RUN cd /usr/local && ln -s zookeeper-3.4.6 zookeeper
+#RUN cd /usr/local && ln -s zookeeper-3.4.6 zookeeper
+RUN ln -s /usr/local/zookeeper-3.4.6 /usr/local/zookeeper
 ENV ZOO_HOME /usr/local/zookeeper
 ENV PATH $PATH:$ZOO_HOME/bin
 #RUN mv $ZOO_HOME/conf/zoo_sample.cfg $ZOO_HOME/conf/zoo.cfg
-RUN mkdir /tmp/zookeeper
 
 ADD files/zoo.cfg $ZOO_HOME/conf/zoo.cfg
 

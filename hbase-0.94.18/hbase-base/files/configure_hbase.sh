@@ -16,6 +16,10 @@ function create_hbase_directories() {
     rm -rf /opt/hbase-$HBASE_VERSION/logs
     mkdir -p /opt/hbase-$HBASE_VERSION/logs
     chown hdfs.hdfs /opt/hbase-$HBASE_VERSION/logs
+    
+    chown hdfs.hdfs /usr/local/zookeeper
+    mkdir /tmp/zookeeper
+    chown hdfs.hdfs /tmp/zookeeper
 }
 
 function deploy_hbase_files() {
