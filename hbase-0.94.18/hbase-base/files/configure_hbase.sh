@@ -35,11 +35,7 @@ function configure_hbase() {
     configure_hadoop $1
     sed -i s/__MASTER__/master/ /opt/hbase-$HBASE_VERSION/conf/hbase-env.sh
     sed -i s/__HBASE_HOME__/"\/opt\/hbase-${HBASE_VERSION}"/ /opt/hbase-$HBASE_VERSION/conf/hbase-env.sh
-    sed -i s/__JAVA_HOME__/"\/usr\/lib\/jvm\/java-7-openjdk-amd64"/ /opt/hbase-$HBASE_VERSION/conf/hbase-env.sh
-	
-	sed -i "s/@IP@/$1/g" $HBASE_HOME/conf/hbase-site.xml
-	sed -i "s/@IP@/$1/g" $ZOO_HOME/conf/zoo.cfg
-	#echo "$1 $(hostname)" >> /etc/hosts
+    sed -i s/__JAVA_HOME__/"\/usr\/lib\/jvm\/java-7-openjdk-amd64"/ /opt/hbase-$HBASE_VERSION/conf/hbase-env.sh	
 }
 
 function prepare_hbase() {

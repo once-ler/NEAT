@@ -17,9 +17,20 @@ service hadoop-namenode start > /dev/null 2>&1
 echo "starting sshd"
 /usr/sbin/sshd
 
-sleep 5
+#sleep 5
+
+sed -i "s/@IP@/$IP/g" $HBASE_HOME/conf/hbase-site.xml
+sed -i "s/@IP@/$IP/g" $ZOO_HOME/conf/zoo.cfg
 
 echo "starting Hbase Master"
 cp /root/hbase_master_files/run_hbase_master.sh /
 chmod a+rx /run_hbase_master.sh
-sudo -u hdfs ZOO_HOME=$ZOO_HOME HBASE_HOME=$HBASE_HOME HBASE_CONF_DIR=$HBASE_CONF_DIR HBASE_VERSION=$HBASE_VERSION IP=$IP /run_hbase_master.sh
+
+while [ 1 ];
+do
+	tail -f "${HBASE_HOME}/logs"/*.out
+        sleep 1
+done
+
+# Don't start Hbase yet.  Need to wait for the datanodes to come up.
+#sudo -u hdfs ZOO_HOME=$ZOO_HOME HBASE_HOME=$HBASE_HOME HBASE_CONF_DIR=$HBASE_CONF_DIR HBASE_VERSION=$HBASE_VERSION IP=$IP /run_hbase_master.sh

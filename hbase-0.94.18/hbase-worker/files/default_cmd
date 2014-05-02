@@ -19,4 +19,11 @@ sleep 5
 echo "starting HBase Worker"
 cp /root/hbase_worker_files/run_hbase_worker.sh /
 chmod a+rx /run_hbase_worker.sh
-sudo -u hdfs HBASE_HOME=$HBASE_HOME HBASE_CONF_DIR=$HBASE_CONF_DIR HBASE_VERSION=$HBASE_VERSION /run_hbase_worker.sh
+
+while [ 1 ];
+do
+	tail -f "${HBASE_HOME}/logs"/*.out
+        sleep 1
+done
+
+#sudo -u hdfs HBASE_HOME=$HBASE_HOME HBASE_CONF_DIR=$HBASE_CONF_DIR HBASE_VERSION=$HBASE_VERSION /run_hbase_worker.sh
