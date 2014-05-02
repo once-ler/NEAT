@@ -3,6 +3,8 @@
 MASTER=-1
 MASTER_IP=
 NUM_REGISTERED_WORKERS=0
+BASEDIR=$(cd $(dirname $0); pwd)
+REGIONSERVERS="${BASEDIR}/regionservers"
 
 # starts the Spark/Shark master container
 function start_master() {
@@ -43,6 +45,8 @@ function start_workers() {
 	sleep 3
 	WORKER_IP=$(sudo docker logs $WORKER 2>&1 | egrep '^WORKER_IP=' | awk -F= '{print $2}' | tr -d -c "[:digit:] .")
 	echo "address=\"/$hostname/$WORKER_IP\"" >> $DNSFILE
+    echo "WORKER #${i} IP: $WORKER_IP" 
+    echo $WORKER_IP >> $REGIONSERVERS
     done
 }
 
@@ -53,7 +57,6 @@ function print_cluster_info() {
     echo "***********************************************************************"
     echo "start shell via:            $1"
     echo ""
-    echo "visit Spark WebUI at:       http://$MASTER_IP:8080/"
     echo "visit Hadoop Namenode at:   http://$MASTER_IP:50070"
     echo "ssh into master via:        ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP}"
     echo ""
@@ -67,36 +70,12 @@ function print_cluster_info() {
 }
 
 function get_num_registered_workers() {
-    sleep 5
-    NUM_REGISTERED_WORKERS=$(($NUM_REGISTERED_WORKERS+1))
-    #if [[ "$SPARK_VERSION" == "0.7.3" ]]; then 
-    #    DATA=$( curl --noproxy -s http://$MASTER_IP:8080/?format=json | tr -d '\n' | sed s/\"/\\\\\"/g)
-    #else
-	# Docker on Mac uses tinycore Linux with busybox which has a limited version wget (?)
-	#echo $(uname -a) | grep "Linux boot2docker" > /dev/null
-	#if [[ "$?" == "0" ]]; then
-	#	DATA=$( wget -Y off -q -O - http://$MASTER_IP:8080/json | tr -d '\n' | sed s/\"/\\\\\"/g)
-	#else
-    #    	DATA=$( wget --no-proxy -q -O - http://$MASTER_IP:8080/json | tr -d '\n' | sed s/\"/\\\\\"/g)
-	#fi
-    #fi
-    #NUM_REGISTERED_WORKERS=$(python -c "import json; data = \"$DATA\"; value = json.loads(data); print len(value['workers'])")
+    sleep 3
+    NUM_REGISTERED_WORKERS=$(($NUM_REGISTERED_WORKERS+1))    
 }
 
 function wait_for_master {
-    #if [[ "$SPARK_VERSION" == "0.7.3" ]]; then
-    #    query_string="INFO HttpServer: akka://sparkMaster/user/HttpServer started"
-    #else
-    #    query_string="MasterWebUI: Started Master web UI"
-    #fi
-    #query_string="INFO org.apache.hadoop.http.HttpServer"
     echo -n "waiting for master "
-    #sudo docker logs $MASTER | grep "$query_string" > /dev/null
-    #until [ "$?" -eq 0 ]; do
-	#echo -n "."
-	#sleep 1
-	#sudo docker logs $MASTER | grep "$query_string" > /dev/null;
-    #done
     sleep 5
     echo ""
     echo -n "waiting for nameserver to find master "
@@ -108,4 +87,35 @@ function wait_for_master {
     done
     echo ""
     sleep 3
+}
+
+function start_hbase {
+    
+    echo -n "updating regionservers file"
+    scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=$BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa $REGIONSERVERS root@$MASTER_IP:/opt/hbase/conf/
+
+    echo -n "change regionservers file permission"
+    ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "chown hdfs.hdfs /opt/hbase/conf/regionservers"
+
+    #update the core-site.xml and hbase-site.xml and start hadoop datanodes
+    while read WORKERADDRESS
+    do
+        echo -n "updating core-site.xml on ${WORKERADDRESS}"
+        ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=/root/.ssh/id_rsa etc/hadoop/core-site.xml root@${WORKERADDRESS}:/etc/hadoop/"
+        echo -n "updating hbase-site.xml on ${WORKERADDRESS}"
+        ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=/root/.ssh/id_rsa /opt/hbase/conf/hbase-site.xml root@${WORKERADDRESS}:/opt/hbase/conf/"
+        echo -n "starting datanode on ${WORKERADDRESS}"
+        ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${WORKERADDRESS} "service hadoop-datanode start"
+    
+    done < $REGIONSERVERS
+
+    echo -n "starting zookeeper on ${MASTER_IP}"
+    ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "/usr/local/zookeeper/bin/zkServer.sh start"
+
+    echo -n "starting hbase master on ${MASTER_IP}"
+    ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "sudo -u hdfs /opt/hbase/bin/hbase-daemon.sh --config /opt/hbase/conf start master"
+
+    echo -n "starting all hbase regionservers"
+    ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "sudo -u hdfs /opt/hbase/bin/hbase-daemon.sh --config /opt/hbase/conf --hosts /opt/hbase/conf/regionservers start regionserver"
+
 }
