@@ -7,6 +7,7 @@ $ sudo deploy/deploy_hbase.sh -i htaox/hbase:0.94.18 -w $NUMBER_OF_REGIONSERVERS
 
 This will (typically) result in the following setup:
 
+<pre>
 NAMESERVER         10.1.0.3
 HADOOP NAMENODE    10.1.0.4
 HBASE MASTER       10.1.0.4
@@ -17,6 +18,7 @@ HADOOP DATANODE    10.1.0.6
 HBASE REGIONSERVER 10.1.0.6
 HADOOP DATANODE    10.1.0.7
 HBASE REGIONSERVER 10.1.0.7
+</pre>
 
 #### Kill the HBase cluster
 
