@@ -91,6 +91,8 @@ function wait_for_master {
 
 function start_hbase {
     
+	chmod 400 $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa
+	
     echo -n "updating regionservers file"
     scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=$BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa $REGIONSERVERS root@$MASTER_IP:/opt/hbase/conf/
 
@@ -101,12 +103,14 @@ function start_hbase {
     while read WORKERADDRESS
     do
         echo -n "updating core-site.xml on ${WORKERADDRESS}"
-        ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=/root/.ssh/id_rsa etc/hadoop/core-site.xml root@${WORKERADDRESS}:/etc/hadoop/"
+        ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=/root/.ssh/id_rsa /etc/hadoop/core-site.xml root@${WORKERADDRESS}:/etc/hadoop/"
         echo -n "updating hbase-site.xml on ${WORKERADDRESS}"
         ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=/root/.ssh/id_rsa /opt/hbase/conf/hbase-site.xml root@${WORKERADDRESS}:/opt/hbase/conf/"
         echo -n "starting datanode on ${WORKERADDRESS}"
         ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${WORKERADDRESS} "service hadoop-datanode start"
     
+		sleep 2
+	
     done < $REGIONSERVERS
 
     echo -n "starting zookeeper on ${MASTER_IP}"
