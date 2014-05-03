@@ -1,67 +1,31 @@
-<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
-<configuration>
-<property>
-<name>hbase.master</name>
-<value>@IP@:60000</value>
-<description>The host and port that the HBase master runs at.
-	 A value of 'local' runs the master and a regionserver
-	 in a single process.
-</description>
-</property>
-  <property>
-     <name>hbase.zookeeper.quorum</name>
-     <value>@IP@</value>
-  </property>
-  <property>
-    <name>hbase.rootdir</name>
-    <value>hdfs://@IP@:9000/hbase</value>
-  </property>
-  <property>
-    <name>hbase.cluster.distributed</name>
-    <value>true</value>
-  </property>
-
-  <property>
-    <name>hbase.master.dns.interface</name>
-    <value>eth0</value>
-	<!-- The name of the Network Interface from which a master should report its IP address. -->
-  </property>
-  <!--
-  <property>
-    <name>hbase.master.dns.nameserver</name>
-    <value>default</value>	
-  </property>
-  -->
-  <!-- The host name or IP address of the name server (DNS) which a master should use to determine the host name used for communication and display purposes. -->
-  
-<!--  
-  <property>
-    <name>hbase.master.ipc.address</name>
-    <value>@IP@</value>
-  </property>
--->
-
-  <property>
-    <name>hbase.regionserver.dns.interface</name>
-    <value>eth0</value>
-  </property>
-  <!--
-  <property>
-    <name>hbase.regionserver.dns.nameserver</name>
-    <value>default</value>
-  </property>
-  -->
-  
-  <!--
-  <property>
-    <name>hbase.regionserver.ipc.address</name>
-    <value>@IP@</value>
-  </property>
--->
-
-  <property>
-    <name>hbase.zookeeper.dns.interface</name>
-    <value>eth0</value>
-  </property>
-
-</configuration>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl" ?>
+  <configuration>
+    <property>
+      <name>hbase.master</name>
+      <value>@IP@:60000</value>
+    </property>
+    <property>
+      <name>hbase.zookeeper.quorum</name>
+      <value>@IP@</value>
+    </property>
+    <property>
+      <name>hbase.rootdir</name>
+      <value>hdfs://@IP@:9000/hbase</value>
+    </property>
+    <property>
+      <name>hbase.cluster.distributed</name>
+      <value>true</value>
+    </property>
+    <property>
+      <name>hbase.master.dns.interface</name>
+      <value>eth0</value>
+    </property>
+    <property>
+      <name>hbase.regionserver.dns.interface</name>
+      <value>eth0</value>
+    </property>
+    <property>
+      <name>hbase.zookeeper.dns.interface</name>
+      <value>eth0</value>
+    </property>
+  </configuration>
