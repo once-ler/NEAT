@@ -93,25 +93,9 @@ start_nameserver $NAMESERVER_IMAGE
 wait_for_nameserver
 start_master ${image_name}-master $image_version
 wait_for_master
-if [ "$image_type" == "hbase" ]; then
-    SHELLCOMMAND="sudo $BASEDIR/start_shell.sh -i ${image_name}-shell:$hbase_VERSION -n $NAMESERVER $VOLUME_MAP"
-fi
 
 start_workers ${image_name}-worker $image_version
-#get_num_registered_workers
-NUM_REGISTERED_WORKERS=0
-echo -n "waiting for workers to register "
-until [[  "$NUM_REGISTERED_WORKERS" == "$NUM_WORKERS" ]]; do
-    echo -n "."
-    sleep 1
-    get_num_registered_workers
-done
 echo ""
-print_cluster_info "$SHELLCOMMAND"
-if [[ "$start_shell" -eq 1 ]]; then
-    SHELL_ID=$($SHELLCOMMAND | tail -n 1 | awk '{print $4}')
-    sudo docker attach $SHELL_ID
-fi
-
+print_cluster_info
 #After all the servers are up, we can start the services in sequence
 start_hbase

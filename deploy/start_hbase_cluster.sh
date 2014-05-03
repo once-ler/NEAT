@@ -28,6 +28,9 @@ function start_master() {
 
 # starts a number of Spark/Shark workers
 function start_workers() {
+	
+	rm -f $REGIONSERVERS
+
     for i in `seq 1 $NUM_WORKERS`; do
         echo "starting worker container"
 	hostname="worker${i}${DOMAINNAME}"
@@ -55,7 +58,6 @@ function print_cluster_info() {
     BASEDIR=$(cd $(dirname $0); pwd)"/.."
     echo ""
     echo "***********************************************************************"
-    echo "start shell via:            $1"
     echo ""
     echo "visit Hadoop Namenode at:   http://$MASTER_IP:50070"
     echo "ssh into master via:        ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP}"
@@ -70,13 +72,13 @@ function print_cluster_info() {
 }
 
 function get_num_registered_workers() {
-    sleep 3
+    sleep 2
     NUM_REGISTERED_WORKERS=$(($NUM_REGISTERED_WORKERS+1))    
 }
 
 function wait_for_master {
     echo -n "waiting for master "
-    sleep 5
+    sleep 1
     echo ""
     echo -n "waiting for nameserver to find master "
     check_hostname result master "$MASTER_IP"
@@ -86,7 +88,7 @@ function wait_for_master {
         check_hostname result master "$MASTER_IP"
     done
     echo ""
-    sleep 3
+    sleep 2
 }
 
 function start_hbase {
@@ -102,24 +104,32 @@ function start_hbase {
     #update the core-site.xml and hbase-site.xml and start hadoop datanodes
     while read WORKERADDRESS
     do
-        echo -n "updating core-site.xml on ${WORKERADDRESS}"
-        ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=/root/.ssh/id_rsa /etc/hadoop/core-site.xml root@${WORKERADDRESS}:/etc/hadoop/"
-        echo -n "updating hbase-site.xml on ${WORKERADDRESS}"
-        ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=/root/.ssh/id_rsa /opt/hbase/conf/hbase-site.xml root@${WORKERADDRESS}:/opt/hbase/conf/"
-        echo -n "starting datanode on ${WORKERADDRESS}"
-        ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${WORKERADDRESS} "service hadoop-datanode start"
+        echo "updating core-site.xml on ${WORKERADDRESS}"
+        ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=/root/.ssh/id_rsa /etc/hadoop/core-site.xml root@${WORKERADDRESS}:/etc/hadoop/"
+        
+        echo "starting datanode on ${WORKERADDRESS}"
+        ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${WORKERADDRESS} "service hadoop-datanode start"
     
 		sleep 2
 	
     done < $REGIONSERVERS
 
-    echo -n "starting zookeeper on ${MASTER_IP}"
-    ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "/usr/local/zookeeper/bin/zkServer.sh start"
+    echo "starting zookeeper on ${MASTER_IP}"
+    ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "/usr/local/zookeeper/bin/zkServer.sh start"
 
-    echo -n "starting hbase master on ${MASTER_IP}"
-    ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "sudo -u hdfs /opt/hbase/bin/hbase-daemon.sh --config /opt/hbase/conf start master"
+    echo "starting hbase master on ${MASTER_IP}"
+    ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "sudo -u hdfs /opt/hbase/bin/hbase-daemon.sh --config /opt/hbase/conf start master"
 
-    echo -n "starting all hbase regionservers"
-    ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "sudo -u hdfs /opt/hbase/bin/hbase-daemon.sh --config /opt/hbase/conf --hosts /opt/hbase/conf/regionservers start regionserver"
+    #update the hbase-site.xml and hbase-site.xml and start hbase regionservers
+    while read WORKERADDRESS
+    do
 
+		echo "updating hbase-site.xml on ${WORKERADDRESS}"
+    	ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=/root/.ssh/id_rsa /opt/hbase/conf/hbase-site.xml root@${WORKERADDRESS}:/opt/hbase/conf/"
+        echo "starting hbase regionserver on ${WORKERADDRESS}"
+    	ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${WORKERADDRESS} "sudo -u hdfs /opt/hbase/bin/hbase-daemon.sh --config /opt/hbase/conf start regionserver"
+    
+    	sleep 2
+
+    done < $REGIONSERVERS
 }

@@ -1,6 +1,13 @@
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
-
+<property>
+<name>hbase.master</name>
+<value>@IP@:60000</value>
+<description>The host and port that the HBase master runs at.
+	 A value of 'local' runs the master and a regionserver
+	 in a single process.
+</description>
+</property>
   <property>
      <name>hbase.zookeeper.quorum</name>
      <value>@IP@</value>
