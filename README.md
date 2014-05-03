@@ -1,4 +1,5 @@
-#### Dockerfiles for fully-distributed HBase setup
+### Dockerfiles for fully-distributed HBase setup
+---
 
 This project was based on a fork from amplab / docker-scripts.
 DNS and cluster setup are all credited to the great work of the amplab team.

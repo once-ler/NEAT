@@ -36,15 +36,20 @@ $ sudo docker images | grep "<none>" | awk '{print $3}' | xargs sudo docker rmi
 #### Build locally
 
 __Download the scripts__
-    $ git clone -b add-hbase https://github.com/htaox/docker-scripts.git
+<pre>
+$ git clone -b add-hbase https://github.com/htaox/docker-scripts.git
+</pre>
 
 __Change file permissions__
-    $ cd ~/docker-scripts
-    $ chmod a+x build/build_all_hbase.sh
-    $ chmod a+x hbase-0.94.18/build
-    $ chmod a+x deploy/deploy_hbase.sh
+<pre>    
+$ cd ~/docker-scripts
+$ chmod a+x build/build_all_hbase.sh
+$ chmod a+x hbase-0.94.18/build
+$ chmod a+x deploy/deploy_hbase.sh
+</pre>
 
 __Build__
-    $ sudo build/build_all_hbase.sh
-
+<pre>    
+$ sudo build/build_all_hbase.sh
+</pre>
 
