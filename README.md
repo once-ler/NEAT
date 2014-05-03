@@ -1,3 +1,10 @@
+# Dockerfiles for fully-distributed HBase setup
+
+This project was based on a fork from amplab / docker-scripts.
+DNS and cluster setup are all credited to the great work of the amplab team.
+The rest of this file is the original README.md.
+For building & running HBase on top of a Hadoop cluster, please check out README-hbase.md    
+
 # Dockerfiles for Spark and Shark
 
 ## Contents
