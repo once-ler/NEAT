@@ -1,0 +1,7 @@
+${ES_HOME}/bin/elasticsearch -d
+
+while [ 1 ];
+do
+	tail -f "${ES_HOME}/logs"/*.out
+        sleep 1
+done
