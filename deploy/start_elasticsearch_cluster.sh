@@ -6,8 +6,7 @@ NUM_REGISTERED_WORKERS=0
 BASEDIR=$(cd $(dirname $0); pwd)
 ELASTICSERVERS="${BASEDIR}/elasticservers"
 
-# starts the Spark/Shark master container
-: <<'END'
+# starts the elasticsearch master container
 function start_master() {
     echo "starting master container"
     if [ "$DEBUG" -gt 0 ]; then
@@ -26,9 +25,8 @@ function start_master() {
     echo "MASTER_IP:                     $MASTER_IP"
     echo "address=\"/master/$MASTER_IP\"" >> $DNSFILE
 }
-END
 
-# starts a number of Spark/Shark workers
+# starts a number of elasticsearch workers
 function start_workers() {
 	
 	rm -f $ELASTICSERVERS
@@ -57,24 +55,22 @@ function start_workers() {
 }
 
 # prints out information on the cluster
-: <<'END'
 function print_cluster_info() {
     BASEDIR=$(cd $(dirname $0); pwd)"/.."
     echo ""
     echo "***********************************************************************"
     echo ""
-    echo "visit Hadoop Namenode at:   http://$MASTER_IP:50070"
-    echo "ssh into master via:        ssh -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP}"
-    echo ""
     echo "/data mapped:               $VOLUME_MAP"
     echo ""
-    echo "kill master via:           sudo docker kill $MASTER"
+    echo "MASTER_IP: ${MASTER_IP}"
+    echo ""
+    echo "WORKERS:"
+    cat -n $ELASTICSERVERS
     echo "***********************************************************************"
     echo ""
     echo "to enable cluster name resolution add the following line to _the top_ of your host's /etc/resolv.conf:"
     echo "nameserver $NAMESERVER_IP"
 }
-END
 
 : <<'END'
 function get_num_registered_workers() {
@@ -83,7 +79,6 @@ function get_num_registered_workers() {
 }
 END
 
-: <<'END'
 function wait_for_master {
     echo -n "waiting for master "
     sleep 1
@@ -98,6 +93,5 @@ function wait_for_master {
     echo ""
     sleep 2
 }
-END
 
 

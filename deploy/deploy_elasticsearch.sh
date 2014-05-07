@@ -92,6 +92,10 @@ fi
 start_nameserver $NAMESERVER_IMAGE
 wait_for_nameserver
 
+start_master ${image_name}-master $image_version
+wait_for_master
+
 start_workers ${image_name}-worker $image_version
 sleep 3
 echo ""
+print_cluster_info

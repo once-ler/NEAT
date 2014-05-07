@@ -39,6 +39,3 @@ ADD files/elasticsearch.yml $ES_HOME/conf/elasticsearch.yml
 RUN IP=$(ip -o -4 addr list eth0 | perl -n -e 'if (m{inet\s([\d\.]+)\/\d+\s}xms) { print $1 }')
 RUN echo "ES_IP=$IP"
 RUN sed -i "s/@IP@/$IP/g" $ES_HOME/conf/elasticsearch.yml
-
-RUN chmod 700 /root/elasticsearch_files/default_cmd
-CMD ["/root/elasticsearch_files/default_cmd"]

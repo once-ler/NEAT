@@ -50,6 +50,9 @@ cluster.name: elasticsearch
 #
 # node.data: true
 
+node.master: @MASTER@
+node.data: @DATA@
+
 # You can exploit these settings to design advanced cluster topologies.
 #
 # 1. You want this node to never become a master node, only to hold data.
@@ -181,7 +184,7 @@ cluster.name: elasticsearch
 #
 # Set this property to true to lock the memory:
 #
-# bootstrap.mlockall: true
+bootstrap.mlockall: true
 
 # Make sure that the ES_MIN_MEM and ES_MAX_MEM environment variables are set
 # to the same value, and that the machine has enough memory to allocate
