@@ -35,9 +35,9 @@ function start_workers() {
         echo "starting worker container"
 	hostname="worker${i}${DOMAINNAME}"
         if [ "$DEBUG" -gt 0 ]; then
-	    echo sudo docker run -d --dns $NAMESERVER_IP -h $hostname $VOLUME_MAP $1:$2 ${MASTER_IP}
+	    echo sudo docker run -d --dns $NAMESERVER_IP -h $hostname $VOLUME_MAP $1:$2
         fi
-	WORKER=$(sudo docker run -d --dns $NAMESERVER_IP -h $hostname $VOLUME_MAP $1:$2 ${MASTER_IP})
+	WORKER=$(sudo docker run -d --dns $NAMESERVER_IP -h $hostname $VOLUME_MAP $1:$2)
 
         if [ "$WORKER" = "" ]; then
             echo "error: could not start worker container from image $1:$2"
