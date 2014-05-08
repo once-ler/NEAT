@@ -40,9 +40,6 @@ EXPOSE 9200
 EXPOSE 9300
 
 ADD files /root/elasticsearch_files
-ADD files/default_cmd $ES_HOME/bin/default_cmd
 ADD files/elasticsearch.yml $ES_HOME/conf/elasticsearch.yml
 
-RUN chmod 700 $ES_HOME/bin/default_cmd
-
-RUN chown elasticsearch.elasticsearch $ES_HOME
+RUN chown -R elasticsearch.elasticsearch $ES_HOME

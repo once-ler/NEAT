@@ -12,4 +12,6 @@ sed -i "s/@IP@/$IP/g" $ES_HOME/conf/elasticsearch.yml
 sed -i "s/@MASTER@/true/g" $ES_HOME/conf/elasticsearch.yml
 sed -i "s/@DATA@/false/g" $ES_HOME/conf/elasticsearch.yml
 
-$ES_HOME/bin/default_cmd
+ENV ES_HEAP_SIZE 1g
+
+sudo -u elasticsearch $ES_HOME/bin/elasticsearch -f
