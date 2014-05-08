@@ -21,7 +21,8 @@ ENV ES_USER elasticsearch
 ENV ES_GROUP elasticsearch
 
 RUN addgroup elasticsearch
-RUN adduser --ingroup elasticsearch elasticsearch
+RUN useradd elasticsearch -g elasticsearch
+# RUN adduser --ingroup elasticsearch elasticsearch
 
 # Define mountable directories.
 VOLUME ["/data"]
@@ -42,6 +43,6 @@ ADD files /root/elasticsearch_files
 ADD files/default_cmd $ES_HOME/bin/default_cmd
 ADD files/elasticsearch.yml $ES_HOME/conf/elasticsearch.yml
 
-RUN chmod 700 files/default_cmd $ES_HOME/bin
+RUN chmod 700 $ES_HOME/bin/default_cmd
 
 RUN chown elasticsearch.elasticsearch $ES_HOME
