@@ -13,9 +13,15 @@ RUN cd /tmp && tar xvzf elasticsearch-0.90.13.tar.gz && rm -f elasticsearch-0.90
 RUN mv /tmp/elasticsearch-0.90.13 /elasticsearch
 ENV ES_HOME /elasticsearch
 
-
 # Install elasticsearch-head
 RUN /elasticsearch/bin/plugin -install mobz/elasticsearch-head
+
+# Create elasticsearch user
+ENV ES_USER elasticsearch
+ENV ES_GROUP elasticsearch
+
+RUN addgroup elasticsearch
+RUN adduser --ingroup elasticsearch elasticsearch
 
 # Define mountable directories.
 VOLUME ["/data"]
@@ -24,7 +30,7 @@ VOLUME ["/data"]
 WORKDIR /data
 
 # Define default command.
-ENTRYPOINT ["/elasticsearch/bin/elasticsearch"]
+# ENTRYPOINT ["/elasticsearch/bin/elasticsearch"]
 
 # Expose ports.
 #   - 9200: HTTP
@@ -33,9 +39,9 @@ EXPOSE 9200
 EXPOSE 9300
 
 ADD files /root/elasticsearch_files
-
+ADD files/default_cmd $ES_HOME/bin/default_cmd
 ADD files/elasticsearch.yml $ES_HOME/conf/elasticsearch.yml
 
-RUN IP=$(ip -o -4 addr list eth0 | perl -n -e 'if (m{inet\s([\d\.]+)\/\d+\s}xms) { print $1 }')
-RUN echo "ES_IP=$IP"
-RUN sed -i "s/@IP@/$IP/g" $ES_HOME/conf/elasticsearch.yml
+RUN chmod 700 files/default_cmd $ES_HOME/bin
+
+RUN chown elasticsearch.elasticsearch $ES_HOME
