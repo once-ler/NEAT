@@ -1,4 +1,4 @@
-#### Deploy the HBase fully-distributed cluster
+#### Deploy the Elasticsearch distributed cluster
 
 <pre>
 $ NUMBER_OF_DATANODES=3
@@ -15,14 +15,14 @@ ELASTICSEARCH DATANODE     10.1.0.6
 ELASTICSEARCH DATANODE     10.1.0.7
 </pre>
 
-#### Kill the HBase cluster
+#### Kill the Elasticsearch cluster
 
 <pre>
 $ sudo deploy/kill_all.sh elasticsearch
 $ sudo deploy/kill_all.sh nameserver
 </pre>
 
-#### After HBase cluster is killed, cleanup
+#### After Elasticsearch cluster is killed, cleanup
 <pre>
 $ sudo docker rm `sudo docker ps -a -q`
 $ sudo docker images | grep "<none>" | awk '{print $3}' | xargs sudo docker rmi
