@@ -3,7 +3,10 @@
 This project was based on a fork from amplab / docker-scripts.
 DNS and cluster setup are all credited to the great work of the amplab team.
 The rest of this file is the original README.md.
-For building & running HBase on top of a Hadoop cluster, please check out [README-hbase.md](https://github.com/htaox/docker-scripts/blob/add-hbase/README-hbase.md)    
+For building & running HBase on top of a Hadoop cluster, please check out [README-hbase.md](https://github.com/htaox/docker-scripts/blob/add-hbase/README-hbase.md)
+
+#### Dockerfiles for distributed Elasticsearch setup
+For building & running an Elasticsearch cluster, please check out [README-elasticsearch.md](https://github.com/htaox/docker-scripts/blob/add-hbase/README-elasticsearch.md)     
 
 # Dockerfiles for Spark and Shark
 
