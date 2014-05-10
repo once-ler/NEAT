@@ -1,0 +1,21 @@
+#!/bin/bash
+
+source /root/faunus_files/configure_faunus.sh
+
+IP=$(ip -o -4 addr list eth0 | perl -n -e 'if (m{inet\s([\d\.]+)\/\d+\s}xms) { print $1 }')
+echo "WORKER_IP=$IP"
+
+echo "preparing HBase"
+prepare_faunus $IP
+
+#echo "starting Hadoop Datanode"
+#service hadoop-datanode start
+
+#Don't start Hadoop yet, need to change core-site.xml from master first
+
+echo "starting sshd"
+/usr/sbin/sshd
+
+while true; do sleep 1000; done
+
+# Don't start Faunus yet.  Need to wait for the datanodes to come up.
