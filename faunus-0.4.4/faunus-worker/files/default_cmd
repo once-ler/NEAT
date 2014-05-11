@@ -1,5 +1,7 @@
 #!/bin/bash
 
+env
+
 source /root/faunus_files/configure_faunus.sh
 
 IP=$(ip -o -4 addr list eth0 | perl -n -e 'if (m{inet\s([\d\.]+)\/\d+\s}xms) { print $1 }')
@@ -15,6 +17,8 @@ prepare_faunus $IP
 
 echo "starting sshd"
 /usr/sbin/sshd
+
+echo "starting Faunus Worker"
 
 while true; do sleep 1000; done
 
