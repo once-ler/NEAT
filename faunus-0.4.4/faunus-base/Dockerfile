@@ -6,11 +6,12 @@ MAINTAINER htaox htaox@hotmail.com
 # Download and Install HBase
 ENV FAUNUS_VERSION 0.4.4
 
-RUN apt-get install -y -q git maven
+RUN echo 'deb http://us.archive.ubuntu.com/ubuntu/ precise-security main universe' >> /etc/apt/sources.list
+RUN echo 'deb http://us.archive.ubuntu.com/ubuntu/ precise-updates main universe' >> /etc/apt/sources.list
+RUN cat /etc/apt/sources.list
+RUN apt-get update
 
-RUN git clone https://github.com/Lab41/titan.git
-RUN cd /titan; git checkout dendrite-hadoop2
-RUN mvn install -f /titan/pom.xml -DskipTests
+RUN apt-get install -y -q git maven
 
 RUN git clone https://github.com/thinkaurelius/faunus.git
 RUN mvn install -f ./faunus/pom.xml -DskipTests
