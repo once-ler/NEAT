@@ -43,6 +43,7 @@ ENV PATH $PATH:$ZOO_HOME/bin
 
 ADD files/zoo.cfg $ZOO_HOME/conf/zoo.cfg
 ADD files/zkEnv.sh $ZOO_HOME/bin/zkEnv.sh
+ADD files/zkServer.sh $ZOO_HOME/bin/zkServer.sh
 
 # Ports reference
 # http://blog.cloudera.com/blog/2013/07/guide-to-using-apache-hbase-ports/
@@ -64,4 +65,3 @@ EXPOSE 8080 8085
 EXPOSE 9090 9095
 
 ADD files /root/hbase_files
-
