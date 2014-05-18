@@ -10,9 +10,9 @@ FAUNUSSERVERS="${BASEDIR}/faunusservers"
 function start_master() {
     echo "starting master container"
     if [ "$DEBUG" -gt 0 ]; then
-        echo sudo docker run -d --dns $NAMESERVER_IP -h master${DOMAINNAME} $VOLUME_MAP $1:$2
+        echo sudo docker run -d --dns $NAMESERVER_IP -h faunus-master${DOMAINNAME} $VOLUME_MAP $1:$2
     fi
-    MASTER=$(sudo docker run -d --dns $NAMESERVER_IP -h master${DOMAINNAME} $VOLUME_MAP $1:$2)
+    MASTER=$(sudo docker run -d --dns $NAMESERVER_IP -h faunus-master${DOMAINNAME} $VOLUME_MAP $1:$2)
 
     if [ "$MASTER" = "" ]; then
         echo "error: could not start master container from image $1:$2"
@@ -33,7 +33,7 @@ function start_workers() {
 
     for i in `seq 1 $NUM_WORKERS`; do
         echo "starting worker container"
-	hostname="worker${i}${DOMAINNAME}"
+	hostname="faunus-worker${i}${DOMAINNAME}"
         if [ "$DEBUG" -gt 0 ]; then
 	    echo sudo docker run -d --dns $NAMESERVER_IP -h $hostname $VOLUME_MAP $1:$2
         fi
@@ -84,11 +84,11 @@ function wait_for_master {
     sleep 1
     echo ""
     echo -n "waiting for nameserver to find master "
-    check_hostname result master "$MASTER_IP"
+    check_hostname result faunus-master "$MASTER_IP"
     until [ "$result" -eq 0 ]; do
         echo -n "."
         sleep 1
-        check_hostname result master "$MASTER_IP"
+        check_hostname result faunus-master "$MASTER_IP"
     done
     echo ""
     sleep 2

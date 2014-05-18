@@ -13,7 +13,7 @@ image_type="?"
 image_version="?"
 NUM_WORKERS=2
 
-source $BASEDIR/start_nameserver.sh
+# source $BASEDIR/start_nameserver.sh
 source $BASEDIR/start_faunus_cluster.sh
 
 function check_root() {
@@ -89,8 +89,12 @@ else
     exit 0
 fi
 
-start_nameserver $NAMESERVER_IMAGE
-wait_for_nameserver
+# start_nameserver $NAMESERVER_IMAGE
+# wait_for_nameserver
+
+# The nameserver should be the one used for the HBase cluster
+NAMESERVER_IP=172.17.0.2
+
 start_master ${image_name}-master $image_version
 wait_for_master
 

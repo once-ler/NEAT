@@ -19,6 +19,15 @@ echo "starting sshd"
 
 echo "starting Faunus Master"
 
+# Hack to update /etc/hosts
+# http://stackoverflow.com/questions/19414543/how-can-i-make-etc-hosts-writable-by-root-in-a-docker-container
+#ADD your_hosts_file /tmp/hosts
+# cp /etc/hosts /etc/hosts.bak
+# echo 172.17.0.3 >> /etc/hosts.bak
+#RUN mkdir -p -- /lib-override && cp /lib/x86_64-linux-gnu/libnss_files.so.2 /lib-override
+#RUN perl -pi -e 's:/etc/hosts:/etc/hosts.bak:g' /lib-override/libnss_files.so.2
+#ENV LD_LIBRARY_PATH /lib-override
+
 #Spin forever
 while true; do sleep 1000; done
 
