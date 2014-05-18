@@ -13,7 +13,7 @@ image_type="?"
 image_version="?"
 NUM_WORKERS=2
 
-# source $BASEDIR/start_nameserver.sh
+source $BASEDIR/start_nameserver.sh
 source $BASEDIR/start_faunus_cluster.sh
 
 function check_root() {
