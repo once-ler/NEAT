@@ -4,10 +4,12 @@ NAMESERVER=-1
 NAMESERVER_IP=
 DOMAINNAME=
 #".mycluster.com"
+BASEDIR=$(cd $(dirname $0); pwd)
 
 # starts the dnsmasq nameserver
 function start_nameserver() {
-    DNSDIR="/tmp/dnsdir_$RANDOM"
+    #DNSDIR="/tmp/dnsdir_$RANDOM"
+    DNSDIR="${BASEDIR}"
     DNSFILE="${DNSDIR}/0hosts"
     mkdir $DNSDIR
 

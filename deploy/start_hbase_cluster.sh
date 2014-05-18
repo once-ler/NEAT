@@ -5,14 +5,16 @@ MASTER_IP=
 NUM_REGISTERED_WORKERS=0
 BASEDIR=$(cd $(dirname $0); pwd)
 REGIONSERVERS="${BASEDIR}/regionservers"
+MASTER_HOSTNAME=hbase-master
+WORKER_HOSTNAME=hbase-worker
 
 # starts the Spark/Shark master container
 function start_master() {
     echo "starting master container"
     if [ "$DEBUG" -gt 0 ]; then
-        echo sudo docker run -d --dns $NAMESERVER_IP -h master${DOMAINNAME} $VOLUME_MAP $1:$2
+        echo sudo docker run -d --dns $NAMESERVER_IP -h ${MASTER_HOSTNAME}${DOMAINNAME} $VOLUME_MAP $1:$2
     fi
-    MASTER=$(sudo docker run -d --dns $NAMESERVER_IP -h master${DOMAINNAME} $VOLUME_MAP $1:$2)
+    MASTER=$(sudo docker run -d --dns $NAMESERVER_IP -h ${MASTER_HOSTNAME}${DOMAINNAME} $VOLUME_MAP $1:$2)
 
     if [ "$MASTER" = "" ]; then
         echo "error: could not start master container from image $1:$2"
@@ -33,7 +35,7 @@ function start_workers() {
 
     for i in `seq 1 $NUM_WORKERS`; do
         echo "starting worker container"
-	hostname="worker${i}${DOMAINNAME}"
+	hostname="${WORKER_HOSTNAME}${i}${DOMAINNAME}"
         if [ "$DEBUG" -gt 0 ]; then
 	    echo sudo docker run -d --dns $NAMESERVER_IP -h $hostname $VOLUME_MAP $1:$2 ${MASTER_IP}
         fi
@@ -81,11 +83,11 @@ function wait_for_master {
     sleep 1
     echo ""
     echo -n "waiting for nameserver to find master "
-    check_hostname result master "$MASTER_IP"
+    check_hostname result "$MASTER_HOSTNAME" "$MASTER_IP"
     until [ "$result" -eq 0 ]; do
         echo -n "."
         sleep 1
-        check_hostname result master "$MASTER_IP"
+        check_hostname result "$MASTER_HOSTNAME" "$MASTER_IP"
     done
     echo ""
     sleep 2

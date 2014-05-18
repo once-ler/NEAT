@@ -72,6 +72,12 @@ function parse_options() {
     fi
 }
 
+function check_nameserver() {
+    nameserver=$(sudo docker ps | grep dnsmasq_files | awk '{print $1}' | tr '\n' ' ')
+    containers=($nameserver)
+    NUM_NAMESERVERS=$(echo ${#containers[@]})
+}
+
 check_root
 
 if [[ "$#" -eq 0 ]]; then
@@ -89,8 +95,14 @@ else
     exit 0
 fi
 
-start_nameserver $NAMESERVER_IMAGE
-wait_for_nameserver
+check_nameserver
+
+if [ "$NUM_NAMESERVERS" -eq 0 ]; then
+    rm -rf $BASEDIR/0hosts
+    start_nameserver $NAMESERVER_IMAGE
+    wait_for_nameserver
+fi
+
 start_master ${image_name}-master $image_version
 wait_for_master
 
