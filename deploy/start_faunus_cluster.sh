@@ -23,7 +23,7 @@ function start_master() {
     sleep 3
     MASTER_IP=$(sudo docker logs $MASTER 2>&1 | egrep '^MASTER_IP=' | awk -F= '{print $2}' | tr -d -c "[:digit:] .")
     echo "MASTER_IP:                     $MASTER_IP"
-    echo "address=\"/master/$MASTER_IP\"" >> $DNSFILE
+    # echo "address=\"/master/$MASTER_IP\"" >> $DNSFILE
 }
 
 # starts a number of Faunus workers
@@ -47,7 +47,7 @@ function start_workers() {
 	echo "started worker container:  $WORKER"
 	sleep 3
 	WORKER_IP=$(sudo docker logs $WORKER 2>&1 | egrep '^WORKER_IP=' | awk -F= '{print $2}' | tr -d -c "[:digit:] .")
-	echo "address=\"/$hostname/$WORKER_IP\"" >> $DNSFILE
+	# echo "address=\"/$hostname/$WORKER_IP\"" >> $DNSFILE
     echo "WORKER #${i} IP: $WORKER_IP" 
     echo $WORKER_IP >> $FAUNUSSERVERS
     done
