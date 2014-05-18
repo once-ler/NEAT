@@ -81,17 +81,7 @@ function get_num_registered_workers() {
 
 function wait_for_master {
     echo -n "waiting for master "
-    sleep 1
-    echo ""
-    echo -n "waiting for nameserver to find master "
-    check_hostname result faunus-master "$MASTER_IP"
-    until [ "$result" -eq 0 ]; do
-        echo -n "."
-        sleep 1
-        check_hostname result faunus-master "$MASTER_IP"
-    done
-    echo ""
-    sleep 2
+    sleep 3    
 }
 
 function start_faunus {
