@@ -72,10 +72,11 @@ function parse_options() {
     fi
 }
 
-function check_nameserver() {
-    nameserver=$(sudo docker ps | grep dnsmasq_files | awk '{print $1}' | tr '\n' ' ')
-    containers=($nameserver)
-    NUM_NAMESERVERS=$(echo ${#containers[@]})
+function check_hbase() {
+
+    containers=$(sudo docker ps | grep hbase-master | awk '{print $1}' | tr '\n' ' ')
+    NUM_HBASE_MASTER=$(echo ${#containers[@]})
+    echo "There are $NUM_HBASE_MASTER HBase servers"
 }
 
 check_root
@@ -95,12 +96,12 @@ else
     exit 0
 fi
 
-check_nameserver
+check_start_nameserver $NAMESERVER_IMAGE
 
-if [ "$NUM_NAMESERVERS" -eq 0 ]; then
-    rm -rf $BASEDIR/0hosts
-    start_nameserver $NAMESERVER_IMAGE
-    wait_for_nameserver
+check_hbase
+
+if [ $NUM_HBASE_MASTER -gt 0 ]; then
+    exit 0
 fi
 
 start_master ${image_name}-master $image_version

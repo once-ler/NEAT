@@ -25,7 +25,7 @@ function start_master() {
     sleep 3
     MASTER_IP=$(sudo docker logs $MASTER 2>&1 | egrep '^MASTER_IP=' | awk -F= '{print $2}' | tr -d -c "[:digit:] .")
     echo "MASTER_IP:                     $MASTER_IP"
-    echo "address=\"/master/$MASTER_IP\"" >> $DNSFILE
+    echo "address=\"/$MASTER_HOSTNAME/$MASTER_IP\"" >> $DNSFILE
 }
 
 # starts a number of Spark/Shark workers

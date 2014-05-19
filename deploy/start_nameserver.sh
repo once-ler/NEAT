@@ -8,10 +8,13 @@ BASEDIR=$(cd $(dirname $0); pwd)
 
 # starts the dnsmasq nameserver
 function start_nameserver() {
-    #DNSDIR="/tmp/dnsdir_$RANDOM"
-    DNSDIR="${BASEDIR}"
+    DNSDIR="/tmp/dnsdir_$RANDOM"
+    #DNSDIR="${BASEDIR}"
     DNSFILE="${DNSDIR}/0hosts"
     mkdir $DNSDIR
+
+    rm -rf $BASEDIR/DNSMASQ
+    echo $DNSFILE > "${BASEDIR}/DNSMASQ" 
 
     echo "starting nameserver container"
     if [ "$DEBUG" -gt 0 ]; then
@@ -75,4 +78,27 @@ function wait_for_nameserver {
         check_hostname result nameserver "$NAMESERVER_IP"
     done
     echo ""
+}
+
+function check_nameserver() {
+    nameservers=$(sudo docker ps | grep dnsmasq_files | awk '{print $1}' | tr '\n' ' ')
+    containers=($nameservers)
+    NUM_NAMESERVERS=$(echo ${#containers[@]})
+    echo "There are $NUM_NAMESERVERS nameservers"
+}
+
+function check_start_nameserver() {
+
+    check_nameserver
+
+    if [ "$NUM_NAMESERVERS" -eq 0 ]; then
+        start_nameserver $1
+        # start_nameserver $NAMESERVER_IMAGE
+        wait_for_nameserver
+    else
+        HOSTFILE=$(cat $BASEDIR/DNSMASQ)
+        DNSFILE=$HOSTFILE
+        NAMESERVER_IP=$(cat $HOSTFILE | grep nameserver | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}")
+        echo "NAMESERVER_IP: $NAMESERVER_IP"        
+    fi    
 }
