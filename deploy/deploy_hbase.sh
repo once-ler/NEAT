@@ -74,9 +74,10 @@ function parse_options() {
 
 function check_hbase() {
 
-    containers=$(sudo docker ps | grep hbase-master | awk '{print $1}' | tr '\n' ' ')
-    NUM_HBASE_MASTER=$(echo ${#containers[@]})
-    echo "There are $NUM_HBASE_MASTER HBase servers"
+    containers=($(sudo docker ps | grep hbase-master | awk '{print $1}' | tr '\n' ' '))
+    NUM_HBASE_MASTER=$(echo ${#containers[@]})    
+    echo "There are $NUM_HBASE_MASTER HBase servers running"
+
 }
 
 check_root
