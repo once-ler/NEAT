@@ -72,6 +72,14 @@ function parse_options() {
     fi
 }
 
+function check_elasticsearch() {
+
+    containers=($(sudo docker ps | grep elasticsearch-master | awk '{print $1}' | tr '\n' ' '))
+    NUM_ELASTIC_MASTER=$(echo ${#containers[@]})    
+    echo "There are $NUM_ELASTIC_MASTER Elasticsearch servers running"
+
+}
+
 check_root
 
 if [[ "$#" -eq 0 ]]; then
@@ -89,8 +97,13 @@ else
     exit 0
 fi
 
-start_nameserver $NAMESERVER_IMAGE
-wait_for_nameserver
+check_start_nameserver $NAMESERVER_IMAGE
+
+check_elasticsearch
+
+if [ $NUM_ELASTIC_MASTER -gt 0 ]; then
+    exit 0
+fi
 
 start_master ${image_name}-master $image_version
 wait_for_master
