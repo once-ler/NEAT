@@ -13,8 +13,8 @@ function start_nameserver() {
     DNSFILE="${DNSDIR}/0hosts"
     mkdir $DNSDIR
 
-    rm -rf $BASEDIR/DNSMASQ
-    echo $DNSFILE > "${BASEDIR}/DNSMASQ" 
+    rm -rf /tmp/DNSMASQ
+    echo $DNSFILE > "/tmp/DNSMASQ" 
 
     echo "starting nameserver container"
     if [ "$DEBUG" -gt 0 ]; then
@@ -96,7 +96,7 @@ function check_start_nameserver() {
         # start_nameserver $NAMESERVER_IMAGE
         wait_for_nameserver
     else
-        HOSTFILE=$(cat $BASEDIR/DNSMASQ)
+        HOSTFILE=$(cat /tmp/DNSMASQ)
         DNSFILE=$HOSTFILE
         NAMESERVER_IP=$(cat $HOSTFILE | grep nameserver | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}")
         echo "NAMESERVER_IP: $NAMESERVER_IP"        
