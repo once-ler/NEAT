@@ -72,6 +72,14 @@ function parse_options() {
     fi
 }
 
+function check_faunus() {
+
+    containers=($(sudo docker ps | grep faunus-master | awk '{print $1}' | tr '\n' ' '))
+    NUM_FAUNUS_MASTER=$(echo ${#containers[@]})    
+    echo "There are $NUM_FAUNUS_MASTER Faunus servers running"
+
+}
+
 check_root
 
 if [[ "$#" -eq 0 ]]; then
@@ -89,11 +97,13 @@ else
     exit 0
 fi
 
-# start_nameserver $NAMESERVER_IMAGE
-# wait_for_nameserver
+check_start_nameserver $NAMESERVER_IMAGE
 
-# The nameserver should be the one used for the HBase cluster
-NAMESERVER_IP=172.17.0.2
+check_faunus
+
+if [ $NUM_FAUNUS_MASTER -gt 0 ]; then
+    exit 0
+fi
 
 start_master ${image_name}-master $image_version
 wait_for_master
