@@ -18,7 +18,11 @@ service hadoop-namenode start > /dev/null 2>&1
 cp /root/faunus_master_files/mapred-site.xml /etc/hadoop/mapred-site.xml
 
 # Update JobTracker IP
-sed -i "s/@IP@/${1}:50030/g" $HBASE_HOME/conf/mapred-site.xml
+sed -i "s/@IP@/${IP}:9001/g" /etc/hadoop/mapred-site.xml
+
+# change user permissions for default mapred.system.dir
+sudo -u hdfs hadoop fs -mkdir /tmp
+sudo -u hdfs hadoop fs -chmod 777 /tmp
 
 echo "starting Hadoop Jobtracker"
 service hadoop-jobtracker start > /dev/null 2>&1 
