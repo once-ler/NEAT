@@ -99,6 +99,10 @@ function start_faunus {
         echo "starting datanode on ${WORKERADDRESS}"
         ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${WORKERADDRESS} "service hadoop-datanode start"
     
+        echo "starting tasktracker on ${WORKERADDRESS}"
+        ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${WORKERADDRESS} "service hadoop-tasktracker start"
+    
+
 		sleep 2
 	
     done < $FAUNUSSERVERS

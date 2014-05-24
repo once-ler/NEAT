@@ -9,24 +9,25 @@ function create_faunus_directories() {
     chown hdfs.hdfs /opt/faunus-$FAUNUS_VERSION/work
     mkdir /tmp/faunus
     chown hdfs.hdfs /tmp/faunus
-    # this one is for faunus shell logging
+    
     rm -rf /var/lib/hadoop/hdfs
     mkdir -p /var/lib/hadoop/hdfs
-    chown hdfs.hdfs /var/lib/hadoop/hdfs
-    #rm -rf /opt/faunus-$FAUNUS_VERSION/logs
-    #mkdir -p /opt/faunus-$FAUNUS_VERSION/logs
-    #chown hdfs.hdfs /opt/faunus-$FAUNUS_VERSION/logs    
+    chown hdfs.hdfs /var/lib/hadoop/hdfs    
 }
 
 function deploy_faunus_files() {
     deploy_hadoop_files
-    #cp /root/faunus_files/faunus-env.sh /opt/faunus-$FAUNUS_VERSION/conf/
-    #cp /root/faunus_files/log4j.properties /opt/faunus-$FAUNUS_VERSION/conf/
+    echo 'FAUNUS_HOME=/opt/faunus' >> /etc/environment    
 }		
 
 function configure_faunus() {
     configure_hadoop $1
-    #sed -i s/__MASTER__/master/ /opt/faunus-$FAUNUS_VERSION/conf/faunus-env.sh
+
+    # Copy mapred.xml to hadoop conf dir
+    cp /root/faunus_files/mapred.xml /etc/hadoop/mapred.xml
+
+    # Update JobTracker IP
+    sed -i "s/@IP@/$1/g" $HBASE_HOME/conf/mapred.xml
 }
 
 function prepare_faunus() {
