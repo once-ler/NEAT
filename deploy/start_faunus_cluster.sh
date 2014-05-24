@@ -96,6 +96,9 @@ function start_faunus {
         echo "updating core-site.xml on ${WORKERADDRESS}"
         ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=/root/.ssh/id_rsa /etc/hadoop/core-site.xml root@${WORKERADDRESS}:/etc/hadoop/"
         
+        echo "updating mapred-site.xml on ${WORKERADDRESS}"
+        ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=/root/.ssh/id_rsa /etc/hadoop/mapred-site.xml root@${WORKERADDRESS}:/etc/hadoop/"
+        
         echo "starting datanode on ${WORKERADDRESS}"
         ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${WORKERADDRESS} "service hadoop-datanode start"
     

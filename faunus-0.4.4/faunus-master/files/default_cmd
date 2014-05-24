@@ -14,6 +14,12 @@ echo "starting Hadoop Namenode"
 sudo -u hdfs hadoop namenode -format > /dev/null 2>&1
 service hadoop-namenode start > /dev/null 2>&1
 
+# Copy mapred.xml to hadoop conf dir
+cp /root/faunus_master_files/mapred-site.xml /etc/hadoop/mapred-site.xml
+
+# Update JobTracker IP
+sed -i "s/@IP@/${1}:50030/g" $HBASE_HOME/conf/mapred-site.xml
+
 echo "starting Hadoop Jobtracker"
 service hadoop-jobtracker start > /dev/null 2>&1 
 

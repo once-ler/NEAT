@@ -22,12 +22,6 @@ function deploy_faunus_files() {
 
 function configure_faunus() {
     configure_hadoop $1
-
-    # Copy mapred.xml to hadoop conf dir
-    cp /root/faunus_files/mapred.xml /etc/hadoop/mapred.xml
-
-    # Update JobTracker IP
-    sed -i "s/@IP@/$1/g" $HBASE_HOME/conf/mapred.xml
 }
 
 function prepare_faunus() {
