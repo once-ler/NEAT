@@ -10,6 +10,9 @@ echo "WORKER_IP=$IP"
 echo "preparing HBase"
 prepare_faunus $IP
 
+# Increase JVM HEAP SIZE
+sed -i 's/-Xmx128m/-Xmx2048m/g' /etc/hadoop/hadoop-env.sh
+
 #echo "starting Hadoop Datanode"
 #service hadoop-datanode start
 

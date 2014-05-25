@@ -10,15 +10,18 @@ echo "MASTER_IP=$IP"
 echo "preparing Faunus"
 prepare_faunus $IP
 
-echo "starting Hadoop Namenode"
-sudo -u hdfs hadoop namenode -format > /dev/null 2>&1
-service hadoop-namenode start > /dev/null 2>&1
-
 # Copy mapred.xml to hadoop conf dir
 cp /root/faunus_master_files/mapred-site.xml /etc/hadoop/mapred-site.xml
 
 # Update JobTracker IP
 sed -i "s/@IP@/${IP}:9001/g" /etc/hadoop/mapred-site.xml
+
+# Increase JVM HEAP SIZE
+sed -i 's/-Xmx128m/-Xmx1024m/g' /etc/hadoop/hadoop-env.sh 
+
+echo "starting Hadoop Namenode"
+sudo -u hdfs hadoop namenode -format > /dev/null 2>&1
+service hadoop-namenode start > /dev/null 2>&1
 
 # change user permissions for default mapred.system.dir
 sudo -u hdfs hadoop fs -mkdir /tmp
