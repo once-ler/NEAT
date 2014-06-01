@@ -8,6 +8,9 @@ For building & running HBase on top of a Hadoop cluster, please check out [READM
 #### Dockerfiles for distributed Elasticsearch setup
 For building & running an Elasticsearch cluster, please check out [README-elasticsearch.md](https://github.com/htaox/docker-scripts/blob/add-hbase/README-elasticsearch.md)     
 
+#### Dockerfiles for distributed Faunus setup
+For building & running an Faunus cluster, please check out [README-faunus.md](https://github.com/htaox/docker-scripts/blob/add-hbase/README-faunus.md)     
+
 # Dockerfiles for Spark and Shark
 
 ## Contents
