@@ -119,6 +119,8 @@ function start_hbase {
     echo "starting zookeeper on ${MASTER_IP}"
     ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "/usr/local/zookeeper/bin/zkServer.sh start"
 
+	sleep 2
+	
     echo "starting hbase master on ${MASTER_IP}"
     ssh -n -i $BASEDIR/apache-hadoop-hdfs-precise/files/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@${MASTER_IP} "sudo -u hdfs /opt/hbase/bin/hbase-daemon.sh --config /opt/hbase/conf start master"
 
