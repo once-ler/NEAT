@@ -1,6 +1,7 @@
 NEAT
 ====
-Node Elasticsearch Angular Titan
+
+# Node Elasticsearch Angular Titan
 
 #### What is it?
 Not a stack or framework.  More like an amusement park.
