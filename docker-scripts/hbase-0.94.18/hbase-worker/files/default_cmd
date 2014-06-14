@@ -1,0 +1,31 @@
+#!/bin/bash
+
+source /root/hbase_files/configure_hbase.sh
+
+IP=$(ip -o -4 addr list eth0 | perl -n -e 'if (m{inet\s([\d\.]+)\/\d+\s}xms) { print $1 }')
+echo "WORKER_IP=$IP"
+
+echo "preparing HBase"
+prepare_hbase $IP
+
+#echo "starting Hadoop Datanode"
+#service hadoop-datanode start
+
+#Don't start Hadoop yet, need to change core-site.xml from master first
+
+echo "starting sshd"
+/usr/sbin/sshd
+
+sleep 5
+
+#echo "starting HBase Worker"
+cp /root/hbase_worker_files/run_hbase_worker.sh /
+chmod a+rx /run_hbase_worker.sh
+
+while [ 1 ];
+do
+	tail -f "${HBASE_HOME}/logs"/*.out
+        sleep 1
+done
+
+#sudo -u hdfs HBASE_HOME=$HBASE_HOME HBASE_CONF_DIR=$HBASE_CONF_DIR HBASE_VERSION=$HBASE_VERSION /run_hbase_worker.sh

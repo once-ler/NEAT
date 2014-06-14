@@ -1,0 +1,1 @@
+sudo docker build -t amplab/spark-shell-mesos:0.7.3 .

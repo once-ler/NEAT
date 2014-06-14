@@ -1,0 +1,39 @@
+#!/bin/bash
+
+env
+
+source /root/faunus_files/configure_faunus.sh
+
+IP=$(ip -o -4 addr list eth0 | perl -n -e 'if (m{inet\s([\d\.]+)\/\d+\s}xms) { print $1 }')
+echo "MASTER_IP=$IP"
+
+echo "preparing Faunus"
+prepare_faunus $IP
+
+# Copy mapred.xml to hadoop conf dir
+cp /root/faunus_master_files/mapred-site.xml /etc/hadoop/mapred-site.xml
+
+# Update JobTracker IP
+sed -i "s/@IP@/${IP}:9001/g" /etc/hadoop/mapred-site.xml
+
+# Increase JVM HEAP SIZE
+sed -i 's/-Xmx128m/-Xmx1024m/g' /etc/hadoop/hadoop-env.sh 
+
+echo "starting Hadoop Namenode"
+sudo -u hdfs hadoop namenode -format > /dev/null 2>&1
+service hadoop-namenode start > /dev/null 2>&1
+
+# change user permissions for default mapred.system.dir
+sudo -u hdfs hadoop fs -mkdir /tmp
+sudo -u hdfs hadoop fs -chmod 777 /tmp
+
+echo "starting Hadoop Jobtracker"
+service hadoop-jobtracker start > /dev/null 2>&1 
+
+echo "starting sshd"
+/usr/sbin/sshd
+
+echo "starting Faunus Master"
+
+#Spin forever
+while true; do sleep 1000; done

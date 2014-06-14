@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# determines which Mesos image is chosen
+MESOS_VERSION=0.13.0
+
+# set this value to the number of workers you want
+NUM_WORKERS=2
+
+if [[ "$USER" != "root" ]]; then
+   echo "please run as: sudo $0"
+   exit 1
+fi
+
+source ../../dnsmasq-precise/deploy/start_nameserver.sh
+source start_mesos_cluster.sh
+
+echo "*** Starting Mesos $MESOS_VERSION ***"
+start_nameserver
+sleep 5
+start_mesos_master
+sleep 40
+start_mesos_workers
+sleep 3
+print_cluster_info
+
