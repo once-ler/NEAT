@@ -5,11 +5,9 @@ MAINTAINER htaox htaox@hotmail.com
 
 RUN git clone https://github.com/tinkerpop/tinkerpop3.git
 
-RUN cd tinkerpop3
+RUN cd tinkerpop3 && mvn clean package -DskipTests
 
-RUN mvn clean package -DskipTests
-
-RUN cp ~/tinkerpop3/gremlin-server/target/gremlin-server-3.0.0-SNAPSHOT-distribution.zip /opt
+RUN cp tinkerpop3/gremlin-server/target/gremlin-server-3.0.0-SNAPSHOT-distribution.zip /opt
 
 RUN cd /opt && unzip gremlin-server-3.0.0-SNAPSHOT-distribution.zip
 
@@ -17,4 +15,5 @@ RUN ln -s /opt/gremlin-server-3.0.0-SNAPSHOT /opt/gremlin-server && cd /opt/grem
 
 EXPOSE 8182
 
-ENTRYPOINT ["opt/gremlin-server/gremlin-server.sh"]
+ENTRYPOINT ["/opt/gremlin-server/bin/gremlin-server.sh"]
+CMD [""]
