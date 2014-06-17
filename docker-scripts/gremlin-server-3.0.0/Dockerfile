@@ -3,7 +3,9 @@
 FROM htaox/oracle-java8:latest
 MAINTAINER htaox htaox@hotmail.com
 
-RUN git clone https://github.com/tinkerpop/tinkerpop3.git && cd tinkerpop3
+RUN git clone https://github.com/tinkerpop/tinkerpop3.git
+
+RUN cd tinkerpop3
 
 RUN mvn clean package -DskipTests
 
