@@ -13,4 +13,4 @@ echo "starting sshd"
 /usr/sbin/sshd
 
 echo "starting gremlin-server"
-/opt/gremlin-server/bin/gremlin-server.sh /opt/gremlin-server/config/gremlin-server.properties
+/opt/gremlin-server/bin/gremlin-server.sh /opt/gremlin-server/config/gremlin-server.yaml
