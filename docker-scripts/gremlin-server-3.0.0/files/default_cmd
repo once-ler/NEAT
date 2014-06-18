@@ -1,0 +1,13 @@
+
+IP=$(ip -o -4 addr list eth0 | perl -n -e 'if (m{inet\s([\d\.]+)\/\d+\s}xms) { print $1 }')
+echo "IP=$IP"
+
+sed -i "s|^host:.*|host: $IP|" /opt/gremlin-server/config/gremlin-server.yaml
+
+mkdir /var/run/sshd
+
+echo "starting sshd"
+/usr/sbin/sshd
+
+echo "starting gremlin-server"
+/opt/gremlin-server/bin/gremlin-server.sh

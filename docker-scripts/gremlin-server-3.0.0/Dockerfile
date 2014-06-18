@@ -15,5 +15,6 @@ RUN ln -s /opt/gremlin-server-3.0.0-SNAPSHOT /opt/gremlin-server && cd /opt/grem
 
 EXPOSE 8182
 
-ENTRYPOINT ["/opt/gremlin-server/bin/gremlin-server.sh"]
-CMD [""]
+ADD files /root/gremlin_files
+RUN chmod 700 /root/gremlin_files/default_cmd
+CMD ["/root/gremlin_files/default_cmd"]
