@@ -9,6 +9,9 @@ sed -i "s|^host:.*|host: $IP|" /opt/gremlin-server/config/gremlin-server.yaml
 
 mkdir /var/run/sshd
 
+echo "changing root password"
+RUN echo 'root:gremlin' |chpasswd
+
 echo "starting sshd"
 /usr/sbin/sshd
 
