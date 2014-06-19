@@ -1,6 +1,7 @@
-##The easiest way to test Tinkerpop3 Gremlin Server.
+The easiest way to test Tinkerpop3 Gremlin Server.
+===================================================
 
-Source can be found [here](https://github.com/htaox/NEAT/tree/master/docker-scripts/gremlin-server-3.0.0).
+Github REPO can be found [here](https://github.com/htaox/NEAT/tree/master/docker-scripts/gremlin-server-3.0.0).
 
 ###5 minute setup
 * * *
