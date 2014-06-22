@@ -2,20 +2,19 @@
 
 source $NEAT_HOME/docgraph/setup_env.sh
 source $NEAT_HOME/docgraph/docgraph_functions.sh
+source $NEAT_HOME/docgraph/npidata_functions.sh
 
-downloadDocgraph
+download_npidata_file
 
-sortDocgraph
+move_npidata_file_to_hdfs
 
 moveDocgraphToHdfs
 
-configure_titan
+move_scriptfile
 
-setup_titan_keys
+move_blueprintsfile
 
-move_scriptInputFile
-
-configure_faunus_docgraph
+configure_faunus_npi
 
 create_start_job
 
