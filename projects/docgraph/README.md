@@ -64,7 +64,7 @@ address="/faunus-worker2/172.17.0.13"
 address="/faunus-worker3/172.17.0.14"
 ```
 
-### Launch the Docgraph edges loading script
+### Launch the Docgraph edges bulk loading script
 
 Please launch a screen terminal for your session.
 ```
@@ -76,5 +76,13 @@ That way, when you exit your ssh session, the processes you launch will continue
 $NEAT_HOME/projects/docgraph/process_docgraph.sh
 ```
 
-The bulkload will take a few hours.
+The bulk load will take a few hours.
+
+### Launch the NPI Registry bulk loading script
+
+```
+$NEAT_HOME/projects/docgraph/process_npidata.sh
+```
+
+The bulk load will take about half an hour.
 
