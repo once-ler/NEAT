@@ -38,13 +38,15 @@ sudo $NEAT_HOME/docker-scripts/deploy/deploy_faunus.sh -i htaox/faunus:0.4.4 -w 
 
 The above will commands will launch a nameserver, 4 HBase servers, 4 Elasticsearch servers, and 4 Faunus servers.  All servers will automatically be configured, ie Zookeeper, Task/Job Trackers, etc.
 
-You can see the DNS directory file by doing the following:
+*(Depending on your server's power, you may consider launching more or less workers per cluster)*
+
+You can see the DNS directory file by executing the following:
 
 ```
 cat $(cat /tmp/DNSMASQ)
 ```
 
-Typically, it will look like the following: 
+Typically, it will look like this: 
 
 ```
 address="/nameserver/172.17.0.2"
