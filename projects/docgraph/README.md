@@ -1,5 +1,5 @@
 ## Download NEAT package
-*Important: all scripts will rely on location of NEAT_HOME*
+*Important: all scripts will rely on location of* <strong>NEAT_HOME</strong>
 
 <pre>
 NEAT_HOME=$HOME/NEAT
