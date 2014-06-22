@@ -1,12 +1,12 @@
 ## Download NEAT package
 *Important: all scripts will rely on location of NEAT_HOME*
 
-`
+<pre>
 NEAT_HOME=$HOME/NEAT
 git clone https://github.com/htaox/NEAT.git $NEAT_HOME
-`
+</pre>
 
-"""
+``
 address="/nameserver/172.17.0.2"
 address="/hbase-master/172.17.0.3"
 address="/hbase-worker1/172.17.0.4"
@@ -20,4 +20,4 @@ address="/faunus-master/172.17.0.11"
 address="/faunus-worker1/172.17.0.12"
 address="/faunus-worker2/172.17.0.13"
 address="/faunus-worker3/172.17.0.14"
-"""
+``
