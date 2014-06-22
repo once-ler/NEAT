@@ -1,10 +1,37 @@
-## Download NEAT package
+### Download NEAT package
 *Important: all scripts will rely on location of* <strong>NEAT_HOME</strong>
 
 <pre>
 NEAT_HOME=$HOME/NEAT
 git clone https://github.com/htaox/NEAT.git $NEAT_HOME
 </pre>
+
+### NEAT Package Structure
+
+<pre>
+NEAT/
+    docker-scripts/
+        apache-hadoop-hdfs-precise/
+        build/
+        deploy/
+        dnsmasq-precise/
+        elasticsearch-0.90.13/
+        faunus-0.4.4/
+        hbase-0.94.18/
+    projects/
+        docgraph/
+            config/
+            edges/
+            setup/
+            vertices/
+</pre>
+
+sudo $NEAT_HOME/docker-scripts/deploy/deploy_hbase.sh -i htaox/hbase:0.94.18 -w 3
+
+sudo $NEAT_HOME/docker-scripts/deploy/deploy_elasticsearch.sh -i htaox/elasticsearch:0.90.13 -w 3
+
+sudo $NEAT_HOME/docker-scripts/deploy/deploy_faunus.sh -i htaox/faunus:0.4.4 -w 3
+
 
 ```
 address="/nameserver/172.17.0.2"
