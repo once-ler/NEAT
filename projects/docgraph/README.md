@@ -36,9 +36,9 @@ sudo $NEAT_HOME/docker-scripts/deploy/deploy_elasticsearch.sh -i htaox/elasticse
 sudo $NEAT_HOME/docker-scripts/deploy/deploy_faunus.sh -i htaox/faunus:0.4.4 -w 3
 </pre>
 
-The above will commands will launch a nameserver, 4 HBase servers, 4 Elasticsearch servers, and 4 Faunus servers.  All servers will automatically be configured, ie Zookeeper, Task/Job Trackers, etc.
+The above commands will launch a nameserver, 4 HBase servers, 4 Elasticsearch servers, and 4 Faunus servers.  All servers will automatically be configured, ie Zookeeper, Task/Job Trackers, etc.
 
-*(Depending on your server's power, you may consider launching more or less workers per cluster)*
+*(Depending on your server's power, you may consider launching more or less workers per cluster.)*
 
 You can see the DNS directory file by executing the following:
 
@@ -63,3 +63,18 @@ address="/faunus-worker1/172.17.0.12"
 address="/faunus-worker2/172.17.0.13"
 address="/faunus-worker3/172.17.0.14"
 ```
+
+### Launch the Docgraph edges loading script
+
+Please launch a screen terminal for your session.
+```
+screen
+```
+
+That way, when you exit your ssh session, the processes you launch will continue to run.
+```
+$NEAT_HOME/projects/docgraph/process_docgraph.sh
+```
+
+The bulkload will take a few hours.
+
