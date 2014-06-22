@@ -26,12 +26,15 @@ NEAT/
             vertices/
 </pre>
 
+### Deploy Distributed Hbase, Elasticsearch, and Faunus clusters with Docker
+
+<pre>
 sudo $NEAT_HOME/docker-scripts/deploy/deploy_hbase.sh -i htaox/hbase:0.94.18 -w 3
 
 sudo $NEAT_HOME/docker-scripts/deploy/deploy_elasticsearch.sh -i htaox/elasticsearch:0.90.13 -w 3
 
 sudo $NEAT_HOME/docker-scripts/deploy/deploy_faunus.sh -i htaox/faunus:0.4.4 -w 3
-
+</pre>
 
 ```
 address="/nameserver/172.17.0.2"
