@@ -36,6 +36,16 @@ sudo $NEAT_HOME/docker-scripts/deploy/deploy_elasticsearch.sh -i htaox/elasticse
 sudo $NEAT_HOME/docker-scripts/deploy/deploy_faunus.sh -i htaox/faunus:0.4.4 -w 3
 </pre>
 
+The above will commands will launch a nameserver, 4 HBase servers, 4 Elasticsearch servers, and 4 Faunus servers.  All servers will automatically be configured, ie Zookeeper, Task/Job Trackers, etc.
+
+You can see the DNS directory file by doing the following:
+
+```
+cat $(cat /tmp/DNSMASQ)
+```
+
+Typically, it will look like the following: 
+
 ```
 address="/nameserver/172.17.0.2"
 address="/hbase-master/172.17.0.3"
