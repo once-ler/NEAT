@@ -1,6 +1,6 @@
 # HBASE 0.94.18
 #
-FROM apache-hadoop-hdfs-precise:1.2.1
+FROM htaox/apache-hadoop-hdfs-precise:1.2.1
 MAINTAINER htaox htaox@hotmail.com
 
 # Intall cURL
