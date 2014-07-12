@@ -7,7 +7,7 @@ RUN cd /opt
 
 RUN git clone https://github.com/apache/giraph.git
 
-ENV GIRAPH_HOME=/opt/giraph
+ENV GIRAPH_HOME /opt/giraph
 ENV GIRAPH_VERSION 1.1.0
 
 RUN cd giraph && mvn clean package -DskipTests
