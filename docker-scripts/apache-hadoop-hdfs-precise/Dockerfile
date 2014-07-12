@@ -1,7 +1,9 @@
 # Base Ubuntu Precise 12.04 LTS image
-#
+# Forked/Credit from amplab 
+# https://github.com/amplab/docker-scripts/tree/master/apache-hadoop-hdfs-precise
+# Added Openjdk dependency for Linux 3.8.0-38-generic x86_64
 FROM ubuntu:precise
-MAINTAINER amplab amp-docker@eecs.berkeley.edu
+MAINTAINER htaox htaox@hotmail.com
 
 # Setup a volume for data
 VOLUME ["/data"]
