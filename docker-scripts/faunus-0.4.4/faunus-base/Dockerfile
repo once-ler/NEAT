@@ -1,6 +1,6 @@
 # FAUNUS 0.4.4
 #
-FROM apache-hadoop-hdfs-precise:1.2.1
+FROM htaox/apache-hadoop-hdfs-precise:1.2.1
 MAINTAINER htaox htaox@hotmail.com
 
 # Download and Install HBase
