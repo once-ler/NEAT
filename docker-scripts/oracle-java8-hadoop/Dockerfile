@@ -13,5 +13,11 @@ RUN apt-get update
 RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 RUN apt-get install -y oracle-java8-installer ca-certificates
 
+# Update source.list
+RUN echo 'deb http://us.archive.ubuntu.com/ubuntu/ precise-security main universe' >> /etc/apt/sources.list
+RUN echo 'deb http://us.archive.ubuntu.com/ubuntu/ precise-updates main universe' >> /etc/apt/sources.list
+RUN cat /etc/apt/sources.list
+RUN apt-get update 
+
 # Install tools
 run apt-get install -y git maven curl
