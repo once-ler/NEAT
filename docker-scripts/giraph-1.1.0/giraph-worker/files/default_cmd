@@ -1,0 +1,20 @@
+#!/bin/bash
+
+source /root/giraph_files/configure_giraph.sh
+
+IP=$(ip -o -4 addr list eth0 | perl -n -e 'if (m{inet\s([\d\.]+)\/\d+\s}xms) { print $1 }')
+echo "WORKER_IP=$IP"
+
+echo "preparing Giraph"
+prepare_giraph $IP
+
+#Don't start Hadoop yet, need to change core-site.xml from master first
+
+echo "starting sshd"
+/usr/sbin/sshd
+
+while [ 1 ];
+do
+	tail -f "${HBASE_HOME}/logs"/*.out
+        sleep 1
+done
