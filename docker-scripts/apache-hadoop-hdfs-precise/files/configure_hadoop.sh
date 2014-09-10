@@ -2,6 +2,13 @@
 
 hadoop_files=( "/root/hadoop_files/core-site.xml"  "/root/hadoop_files/hdfs-site.xml" )
 
+
+# Add Fix for Selinux sshd issue if host is RHEL 6
+# re: https://groups.google.com/forum/#!topic/docker-user/73AiwlZEgY4
+function update_selinux() {
+    wget http://mirrors.kernel.org/ubuntu/pool/main/libs/libselinux/libselinux1_2.1.13-2_amd64.deb && dpkg --install libselinux1_2.1.13-2_amd64.deb
+}
+
 function create_hadoop_directories() {
     rm -rf /root/.ssh
     mkdir /root/.ssh
@@ -27,6 +34,7 @@ function configure_hadoop() {
 }
 
 function prepare_hadoop() {
+    update_selinux
     create_hadoop_directories
     deploy_hadoop_files
     configure_hadoop $1
