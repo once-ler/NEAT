@@ -15,9 +15,9 @@ RUN cd incubator-tinkerpop && mvn clean package -DskipTests
 
 RUN cp /incubator-tinkerpop/gremlin-server/target/apache-gremlin-server-3.0.0-SNAPSHOT-distribution.zip /opt
 
-RUN cd /opt && unzip gremlin-server-3.0.0-SNAPSHOT-distribution.zip
+RUN cd /opt && unzip apache-gremlin-server-3.0.0-SNAPSHOT-distribution.zip
 
-RUN ln -s /opt/gremlin-server-3.0.0-SNAPSHOT /opt/gremlin-server && cd /opt/gremlin-server
+RUN ln -s /opt/apache-gremlin-server-3.0.0-SNAPSHOT-distribution /opt/gremlin-server && cd /opt/gremlin-server
 
 EXPOSE 8182
 
