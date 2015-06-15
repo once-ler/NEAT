@@ -3,11 +3,11 @@
 FROM htaox/oracle-java8:latest
 MAINTAINER htaox htaox@hotmail.com
 
-RUN git clone https://github.com/tinkerpop/tinkerpop3.git
+RUN git clone https://github.com/apache/incubator-tinkerpop.git
 
-RUN cd tinkerpop3 && mvn clean package -DskipTests
+RUN cd incubator-tinkerpop && mvn clean package -DskipTests
 
-RUN cp tinkerpop3/gremlin-server/target/gremlin-server-3.0.0-SNAPSHOT-distribution.zip /opt
+RUN cp incubator-tinkerpop/gremlin-server/target/gremlin-server-3.0.0-SNAPSHOT-distribution.zip /opt
 
 RUN cd /opt && unzip gremlin-server-3.0.0-SNAPSHOT-distribution.zip
 
