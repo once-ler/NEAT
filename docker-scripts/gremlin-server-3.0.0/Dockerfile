@@ -1,5 +1,5 @@
 # Base Ubuntu Precise 12.04 LTS image w/ Java 8 & Maven installed
-#
+# #
 # FROM htaox/oracle-java8:latest
 FROM java:8u45-jdk
 MAINTAINER htaox htaox@hotmail.com
