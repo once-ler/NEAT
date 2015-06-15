@@ -13,7 +13,7 @@ RUN git clone https://github.com/apache/incubator-tinkerpop.git
 
 RUN cd incubator-tinkerpop && mvn clean package -DskipTests
 
-RUN cp incubator-tinkerpop/gremlin-server/target/gremlin-server-3.0.0-SNAPSHOT-distribution.zip /opt
+RUN cp /incubator-tinkerpop/gremlin-server/target/apache-gremlin-server-3.0.0-SNAPSHOT-distribution.zip /opt
 
 RUN cd /opt && unzip gremlin-server-3.0.0-SNAPSHOT-distribution.zip
 
