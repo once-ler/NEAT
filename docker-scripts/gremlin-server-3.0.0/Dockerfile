@@ -1,10 +1,11 @@
 # Base Ubuntu Precise 12.04 LTS image w/ Java 8 & Maven installed
-# #
+#
 # FROM htaox/oracle-java8:latest
 FROM java:8u45-jdk
 MAINTAINER htaox htaox@hotmail.com
 
 # Install tools
+RUN apt-cache search maven
 RUN apt-get install -y git maven openssh-server
 
 RUN git clone https://github.com/apache/incubator-tinkerpop.git
