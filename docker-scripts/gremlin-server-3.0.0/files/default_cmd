@@ -5,7 +5,7 @@ env
 IP=$(ip -o -4 addr list eth0 | perl -n -e 'if (m{inet\s([\d\.]+)\/\d+\s}xms) { print $1 }')
 echo "IP=$IP"
 
-sed -i "s|^host:.*|host: $IP|" /opt/gremlin-server/conf/gremlin-server.yaml
+sed -i "s|^host:.*|host: ${BIND_IP:-IP}|" /opt/gremlin-server/conf/gremlin-server.yaml
 
 mkdir /var/run/sshd
 
